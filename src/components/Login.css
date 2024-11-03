@@ -1,0 +1,145 @@
+/* Ensure the entire page takes up 100% of the viewport height */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensure proper sizing throughout */
+  /* Prevent scrolling */
+}
+
+/* Main container for the login page */
+.login-page {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  font-family: "Arial", sans-serif;
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
+}
+
+/* Left section with background color */
+.login-left {
+  flex: 1; /* Make it take up half of the full page */
+  background-color: #dde8ee; /* Replace background image with color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #162838;
+  height: 100%; /* Ensure it covers the full height */
+}
+
+/* Center the text vertically and horizontally */
+.overlay-content {
+  text-align: center;
+  padding: 20px; /* Add some padding for spacing */
+}
+
+.overlay-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.overlay-content p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+/* Right section with login form */
+.login-right {
+  flex: 1; /* Make it take up the other half of the full page */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  height: 100%; /* Ensure it covers the full height */
+}
+
+/* Login form container styling */
+.login-form-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 40px;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.login-form-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.login-form-container p {
+  margin-bottom: 20px;
+  color: #6c757d;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+label span {
+  color: red;
+}
+
+/* Input containers for email and password fields */
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-container i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+/* Sign In button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1a2a63;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #14204a;
+}
+
+/* Sign up option */
+.signup-option {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.signup-option a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-option a:hover {
+  text-decoration: underline;
+}
