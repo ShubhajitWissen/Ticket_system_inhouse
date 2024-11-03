@@ -3,6 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export default function ProtectedRoutes() {
   const [isLoggedIn] = useState(localStorage.getItem("userInfo"));
-
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+  return <Outlet />
+  // return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
 }

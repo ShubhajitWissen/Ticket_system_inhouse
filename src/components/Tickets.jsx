@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 function Tickets() {
   // Sample data for tickets
   const navigate = useNavigate();
-  const tickets = [
+  
+  const [tickets, setTickets] = useState([
     {
       uuid: 1,
       dueDate: "20 Oct 2024",
@@ -57,7 +58,7 @@ function Tickets() {
       status: "First Name",
       type: "First Name",
     },
-  ];
+  ])
 
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);

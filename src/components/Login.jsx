@@ -6,6 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [role, setRole] = useState("user")
   const [isLoginPage, setIsLoginPage] = useState(true);
 
   const navigate = useNavigate();
@@ -14,17 +15,67 @@ function Login() {
     setIsLoginPage((prev) => !prev);
   }
 
-  function handleLogin() {
-    if (email && password) {
-      let userInfo = {
-        email,
-        password,
-      };
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      navigate("/tickets");
-    } else {
-      alert("Please fill all fields.");
+  async function SignUp(userInfo){
+    try{
+      const response = await fetch("http://127.0.0.1:8000/api/users", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+
+        },
+        body:JSON.stringify(userInfo)
+      })
+      console.log(response)
+    }catch(err){
+      console.log(err)
     }
+  }
+
+  async function SignIn(userInfo){
+    try{
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+
+        },
+        body:JSON.stringify(userInfo)
+      })
+      console.log(response)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  function handleLogin() {
+    if(isLoginPage){
+      if (username && password) {
+        let userInfo = {
+          username,
+          password,
+        };
+        SignIn(userInfo)
+        navigate("/tickets");
+      } else {
+        alert("Please fill all fields.");
+      }
+    }else{
+      if(email && password && username && role){
+        let userInfo = {
+          email,
+          password,
+          username,
+          role,
+          tickets:[]
+        }
+        SignUp(userInfo)
+        setIsLoginPage(true)
+
+      }else{
+        alert("Please fill all fields")
+      }
+    }
+    
   }
   return (
     <div className="login-page">
@@ -39,14 +90,13 @@ function Login() {
       {/* Right Section with Login Form */}
       <div className="login-right">
         <div className="login-form-container">
-          <h2>Login to Wissen</h2>
-          <p>Welcome back! Please enter your details.</p>
+          <h2>{isLoginPage ? "Login to Wissen":"Sign up to Wissen"}</h2>
+          {isLoginPage && <p>Welcome back! Please enter your details.</p>}
 
           {/* Name Input */}
-          {!isLoginPage && (
-            <>
+          
               <label htmlFor="name">
-                Name <span>*</span>
+                Username <span>*</span>
               </label>
               <div className="input-container">
                 <input
@@ -57,9 +107,10 @@ function Login() {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-            </>
-          )}
+           
           {/* Email Input */}
+          {!isLoginPage && (
+            <>
           <label htmlFor="email">
             Email <span>*</span>
           </label>
@@ -72,6 +123,17 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          </>
+          )}
+          {!isLoginPage && <><label htmlFor="role">
+            Role <span>*</span>
+          </label>
+          <div className="input-container">
+            <select id="role" defaultValue="user">
+              <option value="user" >User</option>
+              <option value="admin" >Admin</option>
+            </select>
+          </div></>}
 
           {/* Password Input */}
           <label htmlFor="password">
