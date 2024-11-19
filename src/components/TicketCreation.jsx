@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TicketCreation.css"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -12,35 +12,57 @@ const formateDate = function (date) {
 };
 
 function TicketCreation() {
-  const [createdDate, setCreatedDate] = useState(formateDate(new Date()));
-  const [lastUpdated, setLastUpdated] = useState(formateDate(new Date()));
-  const [ticketType, setTicketType] = useState("incident");
+  const [ticketType, setTicketType] = useState("INC");
   const [owner, setOwner] = useState("");
-  const [severity, setSeverity] = useState("high");
-  const [category, setCategory] = useState("high");
+  const [severity, setSeverity] = useState("3");
+  // const [category, setCategory] = useState("high");
   const [assignedTo, setAssignedTo] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
+  const alldev = JSON.parse(localStorage.getItem("alldev"));
+  const currentUser = JSON.parse(localStorage.getItem("userDetail"));
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  const resetForm = () => {
+    setTicketType("incident");
+    setOwner("");
+    setSeverity("high");
+    // setCategory("high");
+    setAssignedTo("");
+    setDescription("");
+  };
+
   const handleCancelBtn = () => {
+    resetForm();
     navigate("/tickets");
   };
 
-  const handleSubmitBtn = (e) => {
+  useEffect(() => {
+    setOwner(currentUser.username);
+  }, []);
+  const handleSubmitBtn = async (e) => {
     e.preventDefault();
-    if ((severity, category, assignedTo, description)) {
+    if ((severity, assignedTo, description)) {
       const newTicket = {
-        createdDate,
-        lastUpdated,
-        ticketType,
-        owner,
-        severity,
-        category,
-        assignedTo,
-        description,
-        uuid: uuidv4(),
+        typ: ticketType,
+        status: "0",
+        state: "0",
+        severity: severity,
+        description: description,
+        assign_to_id: assignedTo,
       };
-      console.log(newTicket);
+
+      const response = await fetch("http://127.0.0.1:8000/api/tickets/inc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(newTicket),
+      });
+      const data = await response.json();
+      console.log(data);
     } else {
       alert("Please fill all the required fields!");
     }
@@ -48,49 +70,8 @@ function TicketCreation() {
 
   return (
     <div className="ticket-form-container">
-      <form>
+      <form className="ticket-form">
         {/* First row of form fields */}
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="uuid">UUID</label>
-            <input type="text" id="uuid" placeholder="eg 9768" disabled />
-          </div>
-          <div className="form-group">
-            <label htmlFor="createdDate">Created Date</label>
-            <input
-              type="text"
-              id="createdDate"
-              placeholder="12/09/24"
-              disabled
-              value={createdDate}
-              onChange={(e) => setCreatedDate(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="lastUpdated">Last Updated</label>
-            <input
-              type="text"
-              id="lastUpdated"
-              placeholder="12/09/24"
-              disabled
-              value={lastUpdated}
-              onChange={(e) => setLastUpdated(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="type">Type</label>
-            <select
-              id="type"
-              value={ticketType}
-              onChange={(e) => setTicketType(e.target.value)}
-            >
-              <option value="incident">Incident</option>
-              <option value="request">Request</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Second row of form fields */}
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="owner">Owner</label>
@@ -103,6 +84,17 @@ function TicketCreation() {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="type">Type</label>
+            <select
+              id="type"
+              value={ticketType}
+              onChange={(e) => setTicketType(e.target.value)}
+            >
+              <option value="INC">Incident</option>
+              <option value="SR">Service Request</option>
+            </select>
+          </div>
+          <div className="form-group">
             <label htmlFor="severity">
               Severity <span>*</span>
             </label>
@@ -111,12 +103,16 @@ function TicketCreation() {
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
             >
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
+              <option value="3">High</option>
+              <option value="2">Medium</option>
+              <option value="1">Low</option>
             </select>
           </div>
-          <div className="form-group">
+        </div>
+
+        {/* Second row of form fields */}
+        <div className="form-row">
+          {/* <div className="form-group">
             <label htmlFor="category">
               Category <span>*</span>
             </label>
@@ -129,18 +125,29 @@ function TicketCreation() {
               <option value="medium">Medium</option>
               <option value="low">Low</option>
             </select>
-          </div>
+          </div> */}
           <div className="form-group">
             <label htmlFor="assignedTo">
               Assigned to <span>*</span>
             </label>
-            <input
+            <select
               type="text"
               id="assignedTo"
               placeholder="eg. owner name"
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
-            />
+            >
+              <option value="" disabled>
+                Select
+              </option>
+              {alldev.map((user) => {
+                return (
+                  <option key={user.uid} value={user.uid}>
+                    {user.username}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
 
@@ -172,13 +179,14 @@ function TicketCreation() {
           </button>
           <button
             type="submit"
-            className="submit-btn"
+            className="submitForm-btn"
             onClick={handleSubmitBtn}
           >
             Submit
           </button>
         </div>
       </form>
+      <div className="ticket-info"></div>
     </div>
   );
 }

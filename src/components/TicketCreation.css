@@ -2,8 +2,8 @@
 .ticket-form-container {
   padding: 20px;
   background-color: white;
+  width: 600px;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px; /* Optional: Rounded corners */
@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  width: 100%; /* Ensure rows take full width */
+  /* width: 100%; Ensure rows take full width */
 }
 
 .form-group {
@@ -40,6 +40,7 @@ input[type="text"],
 input[type="date"],
 select,
 textarea {
+  min-width: "220px";
   width: 100%;
   padding: 10px;
   font-size: 1rem;
@@ -96,14 +97,9 @@ button {
   background-color: #f0f0f0;
 }
 
-.submit-btn {
+.submitForm-btn {
   background-color: #1a2a63;
   color: white;
-  transition: background-color 0.3s ease;
-}
-
-.submit-btn:hover {
-  background-color: #14204a;
 }
 
 /* Responsive Design */

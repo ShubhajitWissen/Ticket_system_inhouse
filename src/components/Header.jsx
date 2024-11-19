@@ -8,11 +8,16 @@ import { useState } from "react";
 
 function Header() {
   const [isDropdown, setIsDropdown] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userDetail"));
+
   const navigate = useNavigate();
   let hideTimer;
 
   const handleSignout = function () {
-    localStorage.removeItem("userInfo");
+    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("allUsers");
+    localStorage.removeItem("userDetail");
     navigate("/login");
   };
 
@@ -35,7 +40,7 @@ function Header() {
             <img src={logo} className="Wissen" alt="logo" />
           </div>
           <div className="line"></div> {/* Line after the logo */}
-          <h2 className="Access">User</h2>
+          <h2 className="Access">{userData.role}</h2>
           {/* Navbar Links with Line */}
           <div className="navbar-right">
             <ul className="navbar-links">
@@ -82,9 +87,11 @@ function Header() {
             }}
             onMouseLeave={handleDropdown}
           >
-            <span style={{ cursor: "pointer", padding: "4px" }}>Profile</span>
             <span style={{ cursor: "pointer", padding: "4px" }}>
-              abcd@gmail.com
+              {userData.username}
+            </span>
+            <span style={{ cursor: "pointer", padding: "4px" }}>
+              {userData.email}
             </span>
             <button onClick={handleSignout}>Logout</button>
           </div>

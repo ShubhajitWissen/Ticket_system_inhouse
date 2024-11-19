@@ -1,12 +1,17 @@
+.tickets-container {
+  /* padding: 20px; */
 
-.main-container {
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .right-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  /* display: flex;
+  flex-direction: column; */
+
+  /* gap: 20px; */
+  width: 100%;
 }
 /* Create ticket button styling */
 .create-ticket-btn {
