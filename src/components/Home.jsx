@@ -11,6 +11,7 @@ export default function Home() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           Authorization: token,
         },
       });
@@ -26,6 +27,7 @@ export default function Home() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           Authorization: token,
         },
       });
